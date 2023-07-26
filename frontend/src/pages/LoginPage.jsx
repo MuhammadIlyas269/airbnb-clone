@@ -1,10 +1,11 @@
 import axios from "axios";
-import React, { useRef } from "react";
-import { Link } from "react-router-dom";
+import React, { useRef, useState } from "react";
+import { Link, Navigate } from "react-router-dom";
 
 const LoginPage = () => {
   const emailRef = useRef("");
   const passwordRef = useRef("");
+  const [redirect, setRedirect] = useState(false);
 
   const submitHandler = async (event) => {
     event.preventDefault();
@@ -22,6 +23,7 @@ const LoginPage = () => {
           withCredentials: true,
         }
       );
+      setRedirect(true);
     } catch (error) {
       console.log(error);
     }
@@ -29,6 +31,9 @@ const LoginPage = () => {
     passwordRef.current.value = "";
   };
 
+  if (redirect) {
+    return <Navigate to={"/"} />;
+  }
   return (
     <div className="mt-4 grow items-center flex justify-around">
       <div className=" mb-64">
