@@ -34,6 +34,12 @@ async function login(req, res) {
   }
 }
 
+async function logout(req, res) {
+  return res.status(200).cookie("token", "").json({
+    message: "success",
+  });
+}
+
 async function userProfile(req, res) {
   try {
     const user = req.user;
@@ -43,4 +49,5 @@ async function userProfile(req, res) {
     return res.status(500).json({ message: "Internal Server Error" });
   }
 }
-module.exports = { register, login, userProfile };
+
+module.exports = { register, login, logout, userProfile };
