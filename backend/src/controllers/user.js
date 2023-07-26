@@ -27,7 +27,11 @@ async function login(req, res) {
     return res
       .status(200)
       .cookie("token", token)
-      .json({ message: "Login Successfully..", token: token });
+      .json({
+        message: "Login Successfully..",
+        user: existingUser,
+        token: token,
+      });
   } catch (e) {
     return res.status(500).json({ message: "Internal Server Error" });
   }
