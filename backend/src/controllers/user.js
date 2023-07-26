@@ -24,17 +24,23 @@ async function login(req, res) {
       return res.status(404).json({ message: "Email or password is invalid" });
 
     const token = existingUser.generateToken();
-    return res
-      .status(200)
-      .cookie("token", token)
-      .json({
-        message: "Login Successfully..",
-        user: existingUser,
-        token: token,
-      });
+    return res.status(200).cookie("token", token).json({
+      message: "Login Successfully..",
+      user: existingUser,
+      token: token,
+    });
   } catch (e) {
     return res.status(500).json({ message: "Internal Server Error" });
   }
 }
 
-module.exports = { register, login };
+async function userProfile(req, res) {
+  try {
+    const user = req.user;
+
+    return res.status(200).json({ message: "success", user });
+  } catch (error) {
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
+}
+module.exports = { register, login, userProfile };

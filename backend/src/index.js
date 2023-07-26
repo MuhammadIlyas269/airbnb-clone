@@ -1,6 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
+const cookieParser = require("cookie-parser");
 
 const allRoutes = require("./routes");
 
@@ -21,12 +22,10 @@ const corsOptions = {
   credentials: true,
 };
 
-// Enable CORS for all routes
 //Middleware
-app.use(cors(corsOptions));
 app.use(express.json());
-// app.use(cors({ credentials: true, origin: "*" }));
-// app.use(cors());
+app.use(cors(corsOptions)); // Enable CORS for all routes
+app.use(cookieParser());
 
 //Routes
 app.use("/", allRoutes);
