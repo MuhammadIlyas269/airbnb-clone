@@ -1,11 +1,13 @@
-import axios from "axios";
-import React, { useRef, useState } from "react";
+import axios from "../api/axios";
+import React, { useContext, useRef, useState } from "react";
 import { Link, Navigate } from "react-router-dom";
+import { UserContext } from "../store/UserContext";
 
 const LoginPage = () => {
   const emailRef = useRef("");
   const passwordRef = useRef("");
   const [redirect, setRedirect] = useState(false);
+  const { user, setUser } = useContext(UserContext);
 
   const submitHandler = async (event) => {
     event.preventDefault();
@@ -23,6 +25,8 @@ const LoginPage = () => {
           withCredentials: true,
         }
       );
+      console.log(JSON.stringify(response.data.user));
+      setUser(response.data.user);
       setRedirect(true);
     } catch (error) {
       console.log(error);
@@ -32,6 +36,7 @@ const LoginPage = () => {
   };
 
   if (redirect) {
+    console.log("user", user);
     return <Navigate to={"/"} />;
   }
   return (
