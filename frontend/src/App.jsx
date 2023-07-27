@@ -13,6 +13,10 @@ function App() {
           <Route path="/login" element={<pages.LoginPage />} />
           <Route path="/register" element={<pages.RegisterPage />} />
           <Route path="/account/:subpage?" element={<pages.AccountPage />} />
+          <Route
+            path="/account/:subpage/:action"
+            element={<pages.PlacesPage />}
+          />
         </Route>
       </Routes>
     </UserContextProvider>
