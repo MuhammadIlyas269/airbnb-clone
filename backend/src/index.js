@@ -26,6 +26,7 @@ const corsOptions = {
 app.use(express.json());
 app.use(cors(corsOptions)); // Enable CORS for all routes
 app.use(cookieParser());
+app.use("/uploads", express.static(__dirname + "/uploads"));
 
 //Routes
 app.use("/", allRoutes);
