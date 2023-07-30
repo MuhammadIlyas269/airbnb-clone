@@ -15,7 +15,6 @@ const LoginPage = () => {
       email: emailRef.current.value,
       password: passwordRef.current.value,
     };
-    console.log(userInputs);
     try {
       const response = await axios.post(
         "/login",
@@ -25,7 +24,6 @@ const LoginPage = () => {
           withCredentials: true,
         }
       );
-      console.log(JSON.stringify(response.data.user));
       setUser(response.data.user);
       setRedirect(true);
     } catch (error) {
@@ -36,7 +34,6 @@ const LoginPage = () => {
   };
 
   if (redirect) {
-    console.log("user", user);
     return <Navigate to={"/"} />;
   }
   return (

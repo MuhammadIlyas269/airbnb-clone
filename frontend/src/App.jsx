@@ -12,10 +12,11 @@ function App() {
           <Route index element={<pages.IndexPage />} />
           <Route path="/login" element={<pages.LoginPage />} />
           <Route path="/register" element={<pages.RegisterPage />} />
-          <Route path="/account/:subpage?" element={<pages.AccountPage />} />
+          <Route path="/account" element={<pages.ProfilePage />} />
+          <Route path="/account/places" element={<pages.PlacesPage />} />
           <Route
-            path="/account/:subpage/:action"
-            element={<pages.PlacesPage />}
+            path="/account/places/new"
+            element={<components.PlacesForm />}
           />
         </Route>
       </Routes>
