@@ -16,8 +16,10 @@ const PlacesForm = () => {
     extraInfo: "",
     checkIn: "",
     checkOut: "",
+    price: 100,
     maxGuests: 1,
   });
+
   const [perks, setPerks] = useState([]);
   const [addedPhotos, setAddedPhotos] = useState([]);
   const [redirect, setRedirect] = useState(false);
@@ -36,6 +38,7 @@ const PlacesForm = () => {
         checkIn: responseData.checkIn,
         checkOut: responseData.checkOut,
         maxGuests: responseData.maxGuests,
+        price: responseData.price,
         photoLink: "",
       });
       setAddedPhotos(responseData.photos);
@@ -147,7 +150,7 @@ const PlacesForm = () => {
         {inputDescription(
           "add check in and out times, remember to have some time window for cleaning the room between guests"
         )}
-        <div className="grid gap-2 sm:grid-cols-3">
+        <div className="grid gap-2 grid-cols-2 md:grid-cols-4">
           <div>
             <h3 className="mt-2 -mb-1">Check in time</h3>
             <input
@@ -174,6 +177,16 @@ const PlacesForm = () => {
               type="number"
               value={userInputs.maxGuests}
               name="maxGuests"
+              onChange={inputChangeHandler}
+              placeholder="2"
+            />
+          </div>
+          <div>
+            <h3 className="mt-2 -mb-1">Price per night</h3>
+            <input
+              type="number"
+              value={userInputs.price}
+              name="price"
               onChange={inputChangeHandler}
               placeholder="2"
             />
