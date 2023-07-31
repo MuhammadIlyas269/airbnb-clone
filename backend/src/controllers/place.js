@@ -70,4 +70,47 @@ async function getUserPlaces(req, res) {
     return res.status(500).json({ message: "Internal Server Error" });
   }
 }
-module.exports = { downloadImage, uploadImage, places, getUserPlaces };
+
+async function placeDetail(req, res) {
+  try {
+    const { id } = req.params;
+    const place = await db.Place.findById(id);
+    return res.status(200).json({
+      message: "success",
+      data: place,
+    });
+  } catch (error) {
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
+}
+
+async function updatePlace(req, res) {
+  try {
+    const { id } = req.params;
+    const userId = req.user.id;
+
+    const placeObj = await db.Place.findById(id);
+
+    if (placeObj.owner.toString() !== userId) {
+      return res.status(400).json({ message: "only owner can update a place" });
+    }
+
+    placeObj.set(req.body);
+    await placeObj.save();
+
+    return res.status(200).json({
+      message: "success",
+    });
+  } catch (error) {
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
+}
+
+module.exports = {
+  downloadImage,
+  uploadImage,
+  places,
+  getUserPlaces,
+  placeDetail,
+  updatePlace,
+};
