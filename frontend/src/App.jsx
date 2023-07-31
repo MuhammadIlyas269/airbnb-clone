@@ -16,11 +16,11 @@ function App() {
           <Route path="/account/places" element={<pages.PlacesPage />} />
           <Route
             path="/account/places/new"
-            element={<components.PlacesForm />}
+            element={<pages.PlacesFormPage />}
           />
           <Route
             path="/account/places/:id"
-            element={<components.PlacesForm />}
+            element={<pages.PlacesFormPage />}
           />
         </Route>
       </Routes>

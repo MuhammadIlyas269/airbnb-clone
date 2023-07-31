@@ -1,13 +1,13 @@
-import React, { useState } from "react";
-import PhotosUploaderForm from "./PhotosUploaderForm";
-import PerksForm from "./PerksForm";
-import axios from "../../api/axios";
+import React, { useEffect, useState } from "react";
+import PhotosUploaderForm from "../components/places-page/PhotosUploaderForm";
+import PerksForm from "../components/places-page/PerksForm";
+import axios from "../api/axios";
 import { Navigate, useParams } from "react-router-dom";
-import AccountNav from "../account-page/AccountNav";
+import AccountNav from "../components/account-page/AccountNav";
 
 const PlacesForm = () => {
   const { id } = useParams();
-  console.log("Id", id);
+
   const [userInputs, setUserInputs] = useState({
     title: "",
     address: "",
@@ -21,7 +21,27 @@ const PlacesForm = () => {
   const [perks, setPerks] = useState([]);
   const [addedPhotos, setAddedPhotos] = useState([]);
   const [redirect, setRedirect] = useState(false);
-  console.log(typeof perks);
+
+  useEffect(() => {
+    if (!id) {
+      return;
+    }
+    axios.get("/places/" + id).then(({ data }) => {
+      const { ...responseData } = data.data;
+      setUserInputs({
+        title: responseData.title,
+        address: responseData.address,
+        description: responseData.description,
+        extraInfo: responseData.extraInfo,
+        checkIn: responseData.checkIn,
+        checkOut: responseData.checkOut,
+        maxGuests: responseData.maxGuests,
+        photoLink: "",
+      });
+      setAddedPhotos(responseData.photos);
+      setPerks(responseData.perks);
+    });
+  }, [id]);
   function inputHeader(text) {
     return <h2 className="text-lg mt-4 ml-1 font-semibold">{text}</h2>;
   }
@@ -48,12 +68,21 @@ const PlacesForm = () => {
     }
   };
 
-  const addNewPlace = async (e) => {
+  const savePlace = async (e) => {
     e.preventDefault();
+
     const { photoLink, ...new_inputs } = userInputs;
     const placeData = { ...new_inputs, perks, photos: addedPhotos };
-    await axios.post("/places", JSON.stringify(placeData));
-    setRedirect(true);
+
+    if (id) {
+      //update place info
+      await axios.put("/places/" + id, JSON.stringify(placeData));
+      setRedirect(true);
+    } else {
+      //add new place
+      await axios.post("/places", JSON.stringify(placeData));
+      setRedirect(true);
+    }
   };
 
   if (redirect) {
@@ -63,7 +92,7 @@ const PlacesForm = () => {
   return (
     <>
       <AccountNav />
-      <form onSubmit={addNewPlace}>
+      <form onSubmit={savePlace}>
         {inputHeader("Title")}
         <input
           type="text"

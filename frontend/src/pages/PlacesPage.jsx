@@ -10,9 +10,7 @@ const PlacesPage = () => {
       .get("/places")
       .then(({ data }) => {
         const result = data.data;
-        // console.log(result);
         setPlaces(result);
-        console.log(places);
       })
       .catch((err) => {
         console.log(err);
@@ -50,14 +48,16 @@ const PlacesPage = () => {
           places.map((place) => (
             <Link
               to={"/account/places/" + place._id}
-              key={place._id}
               className="flex cursor-pointer gap-4 bg-gray-100 p-4 rounded-2xl"
+              key={place._id}
             >
               <div className="flex w-32 h-32 bg-gray-300 grow-0 shrink-0">
-                {place.photos.length > 0 &&
-                  place.photos.map((photo) => (
-                    <img src={`http://localhost:8000/uploads/${photo}`} />
-                  ))}
+                {place.photos.length > 0 && (
+                  <img
+                    src={`http://localhost:8000/uploads/${place.photos[0]}`}
+                    key={place.photos[0]}
+                  />
+                )}
               </div>
               <div className="grow-0 shrink">
                 <h2 className="text-xl">{place.title}</h2>
