@@ -7,7 +7,7 @@ const PlacesPage = () => {
   const [places, setPlaces] = useState([]);
   useEffect(() => {
     axios
-      .get("/places")
+      .get("/places/user")
       .then(({ data }) => {
         const result = data.data;
         setPlaces(result);
@@ -48,7 +48,7 @@ const PlacesPage = () => {
           places.map((place) => (
             <Link
               to={"/account/places/" + place._id}
-              className="flex cursor-pointer gap-4 bg-gray-100 p-4 rounded-2xl"
+              className="flex cursor-pointer gap-4 bg-gray-100 p-4 rounded-2xl my-2 border"
               key={place._id}
             >
               <div className="flex w-32 h-32 bg-gray-300 grow-0 shrink-0">
@@ -56,6 +56,7 @@ const PlacesPage = () => {
                   <img
                     src={`http://localhost:8000/uploads/${place.photos[0]}`}
                     key={place.photos[0]}
+                    className="object-cover w-full h-full"
                   />
                 )}
               </div>

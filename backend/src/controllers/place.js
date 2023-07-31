@@ -57,6 +57,18 @@ async function places(req, res) {
   }
 }
 
+async function placesList(req, res) {
+  try {
+    const places = await db.Place.find({});
+    return res.status(200).json({
+      message: "success",
+      data: places,
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
+}
 async function getUserPlaces(req, res) {
   try {
     const id = req.user.id;
@@ -113,4 +125,5 @@ module.exports = {
   getUserPlaces,
   placeDetail,
   updatePlace,
+  placesList,
 };
