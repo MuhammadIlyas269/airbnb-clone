@@ -5,5 +5,6 @@ const isAuth = require("../middleware/is-auth");
 const router = express.Router();
 
 router.post("/", isAuth, placeController.places);
+router.get("/", isAuth, placeController.getUserPlaces);
 
 module.exports = router;

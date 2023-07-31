@@ -56,4 +56,18 @@ async function places(req, res) {
     return res.status(500).json({ message: "Internal Server Error" });
   }
 }
-module.exports = { downloadImage, uploadImage, places };
+
+async function getUserPlaces(req, res) {
+  try {
+    const id = req.user.id;
+    const places = await db.Place.find({ owner: id });
+    return res.status(200).json({
+      message: "success",
+      data: places,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
+}
+module.exports = { downloadImage, uploadImage, places, getUserPlaces };
