@@ -2,10 +2,12 @@ import React, { useState } from "react";
 import PhotosUploaderForm from "./PhotosUploaderForm";
 import PerksForm from "./PerksForm";
 import axios from "../../api/axios";
-import { Navigate } from "react-router-dom";
+import { Navigate, useParams } from "react-router-dom";
 import AccountNav from "../account-page/AccountNav";
 
 const PlacesForm = () => {
+  const { id } = useParams();
+  console.log("Id", id);
   const [userInputs, setUserInputs] = useState({
     title: "",
     address: "",

@@ -1,9 +1,24 @@
-import React from "react";
-import { Link, useParams } from "react-router-dom";
-import * as components from "../components";
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import AccountNav from "../components/account-page/AccountNav";
+import axios from "../api/axios";
 
 const PlacesPage = () => {
+  const [places, setPlaces] = useState([]);
+  useEffect(() => {
+    axios
+      .get("/places")
+      .then(({ data }) => {
+        const result = data.data;
+        // console.log(result);
+        setPlaces(result);
+        console.log(places);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
   return (
     <>
       <AccountNav />
@@ -29,6 +44,27 @@ const PlacesPage = () => {
           </svg>
           Add new place
         </Link>
+      </div>
+      <div className="mt-4">
+        {places.length > 0 &&
+          places.map((place) => (
+            <Link
+              to={"/account/places/" + place._id}
+              key={place._id}
+              className="flex cursor-pointer gap-4 bg-gray-100 p-4 rounded-2xl"
+            >
+              <div className="flex w-32 h-32 bg-gray-300 grow-0 shrink-0">
+                {place.photos.length > 0 &&
+                  place.photos.map((photo) => (
+                    <img src={`http://localhost:8000/uploads/${photo}`} />
+                  ))}
+              </div>
+              <div className="grow-0 shrink">
+                <h2 className="text-xl">{place.title}</h2>
+                <p className="text-sm mt-2">{place.description}</p>
+              </div>
+            </Link>
+          ))}
       </div>
     </>
   );
