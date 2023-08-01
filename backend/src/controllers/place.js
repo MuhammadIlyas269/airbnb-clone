@@ -118,6 +118,39 @@ async function updatePlace(req, res) {
   }
 }
 
+async function placeBooking(req, res) {
+  try {
+    const data = req.body;
+    const user = req.user.id;
+    const booking = await db.Booking.create({
+      user,
+      ...data,
+    });
+    return res.status(200).json({
+      message: "success",
+      data: booking,
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
+}
+
+async function userBookings(req, res) {
+  try {
+    const id = req.user.id;
+
+    const bookings = await db.Booking.find({ user: id }).populate("place");
+
+    return res.status(200).json({
+      message: "success",
+      data: bookings,
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
+}
 module.exports = {
   downloadImage,
   uploadImage,
@@ -126,4 +159,6 @@ module.exports = {
   placeDetail,
   updatePlace,
   placesList,
+  placeBooking,
+  userBookings,
 };
