@@ -14,7 +14,7 @@ const RegisterPage = () => {
       email: emailRef.current.value,
       password: passwordRef.current.value,
     };
-    console.log(userInputs);
+
     try {
       const response = await axios.post(
         "/register",
@@ -24,9 +24,6 @@ const RegisterPage = () => {
           withCredentials: true,
         }
       );
-      console.log(JSON.stringify(response));
-      console.log(response.data);
-      console.log(response.accessToken);
     } catch (error) {
       console.log(error);
     }

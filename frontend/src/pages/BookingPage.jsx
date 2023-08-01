@@ -1,9 +1,43 @@
-import React from "react";
 import { useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import axios from "../api/axios";
+import AddressLink from "../components/place-page/AddressLink";
+import BookingDates from "../components/place-page/BookingDates";
+import PlaceGallery from "../components/place-page/PlaceGallery";
 
-const BookingPage = () => {
+export default function BookingPage() {
   const { id } = useParams();
-  return <div>BookingPage: {id}</div>;
-};
+  const [booking, setBooking] = useState(null);
+  useEffect(() => {
+    if (id) {
+      axios.get("/bookings").then(({ data }) => {
+        const foundBooking = data.data.find(({ _id }) => _id === id);
+        if (foundBooking) {
+          setBooking(foundBooking);
+        }
+      });
+    }
+  }, [id]);
 
-export default BookingPage;
+  if (!booking) {
+    return "";
+  }
+
+  return (
+    <div className="my-8">
+      <h1 className="text-3xl">{booking.place.title}</h1>
+      <AddressLink className="my-2 block">{booking.place.address}</AddressLink>
+      <div className="bg-gray-200 p-6 my-6 rounded-2xl flex items-center justify-between">
+        <div>
+          <h2 className="text-2xl mb-4">Your booking information:</h2>
+          <BookingDates booking={booking} />
+        </div>
+        <div className="bg-primary p-6 text-white rounded-2xl">
+          <div>Total price</div>
+          <div className="text-3xl">${booking.price}</div>
+        </div>
+      </div>
+      <PlaceGallery place={booking.place} />
+    </div>
+  );
+}
